@@ -1,37 +1,34 @@
-# 🚀 Auracelle Charlie — Azure Deployment via GitHub Actions
+# Auracelle Charlie – AI Governance Simulation Sandbox
 
-This repository is configured to deploy **Auracelle Charlie** directly to **Azure Web App** using a secure GitHub Actions workflow and OpenID Connect (OIDC) authentication.
+This repository contains the **Auracelle Charlie** Streamlit application for simulating AI governance policies between countries and entities using reinforcement learning and influence mapping.
 
-## 📂 Deployment File
+## 💻 Features
 
-- `.github/workflows/Azure-Deploy.yml`: Main GitHub Actions workflow that builds and deploys the app to Azure.
+- Two-page app: Captive Login → Simulation Interface
+- Select Country A/B, roles, and policy scenarios
+- Alignment scoring, Q-learning policy negotiation
+- Influence network graph + geo intelligence map
+- Azure-compatible GitHub Actions deployment
 
-## ✅ Setup Prerequisites
+## 🚀 Deployment on Azure
 
-1. **Azure Web App** created for Python 3.11.
-2. **OIDC Authentication** secrets added in GitHub repository:
-   - `AZUREAPPSERVICE_CLIENTID_CA59A126D6FF447D91D44D0AA0D30FD9`
-   - `AZUREAPPSERVICE_TENANTID_9712D91B25E5481C99C3C19B858946D5`
-   - `AZUREAPPSERVICE_SUBSCRIPTIONID_D3CDEDF6E2B04C1D8B3A217DF516CD1A`
+1. Ensure `AZURE_WEBAPP_PUBLISH_PROFILE` or client credentials are set in GitHub Secrets.
+2. Push changes to the `main` branch.
+3. GitHub Actions auto-deploys via `.github/workflows/Azure-Deploy.yml`.
 
-## 🚦 How it Works
-
-- **On Push to `main`** or Manual Trigger:
-  - Creates a virtual environment
-  - Installs requirements
-  - Uploads project files as artifact
-  - Logs in to Azure securely using OIDC
-  - Deploys using `azure/webapps-deploy@v3`
-
-## 📁 Repository Structure
+## 📁 Structure
 
 ```
-📦 Auracelle-Charlie
- ┣ 📁 pages/
- ┣ 📄 app.py
- ┣ 📄 requirements.txt
- ┣ 📄 .github/workflows/Azure-Deploy.yml
- ┗ 📄 README.md
+.
+├── app.py
+├── pages/
+│   └── auracelle_charlie_simulation.py
+├── requirements.txt
+├── .github/workflows/
+│   └── Azure-Deploy.yml
+└── README.md
 ```
 
-For help, contact Grace-Alice Evans or the AGPO DevOps team.
+---
+
+MIT License © 2025 Grace-Alice Evans
