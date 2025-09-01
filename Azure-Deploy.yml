@@ -33,8 +33,8 @@ jobs:
         with:
           name: python-app
           path: |
-            .
-            !venv/
+            .  # include everything
+            !venv/  # exclude the venv
 
   deploy:
     runs-on: ubuntu-latest
@@ -62,3 +62,6 @@ jobs:
         with:
           app-name: 'Auracelle-Charlie-App'
           slot-name: 'Production'
+          package: .
+          runFromPackage: true
+
