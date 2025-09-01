@@ -1,0 +1,8 @@
+streamlit
+pyngrok
+networkx
+matplotlib
+numpy
+pandas
+torch
+plotly
