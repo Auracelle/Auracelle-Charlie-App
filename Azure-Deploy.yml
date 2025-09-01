@@ -20,21 +20,19 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Create and start virtual environment
+      - name: Install dependencies
         run: |
           python -m venv venv
           source venv/bin/activate
-
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+          pip install -r requirements.txt
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
         with:
           name: python-app
           path: |
-            .  # include everything
-            !venv/  # exclude the venv
+            .
+            !venv/
 
   deploy:
     runs-on: ubuntu-latest
@@ -63,5 +61,5 @@ jobs:
           app-name: 'Auracelle-Charlie-App'
           slot-name: 'Production'
           package: .
-          runFromPackage: true
+          run-from-package: true
 
