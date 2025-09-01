@@ -1,6 +1,6 @@
 # Auracelle Charlie – AI Governance Simulation Sandbox
 
-This repository contains the **Auracelle Charlie** Streamlit application for simulating AI governance policies between countries and entities using reinforcement learning and influence mapping.
+This repository contains the **Auracelle Charlie** Streamlit application for simulating AI governance policies between countries and entities using wargaming techniques, reinforcement learning, deep learning and influence mapping.
 
 ## 💻 Features
 
