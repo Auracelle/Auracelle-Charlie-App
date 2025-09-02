@@ -3,7 +3,7 @@ name: Build and Deploy Auracelle Charlie App
 on:
   push:
     branches:
-      - main  # Adjust if your default branch is different
+      - main
 
 jobs:
   build-and-deploy:
@@ -29,7 +29,7 @@ jobs:
       - name: Azure Login (Service Principal)
         uses: azure/login@v2
         with:
-          creds: >-
+          creds: |
             {
               "clientId": "${{ secrets.AZURE_CLIENT_ID }}",
               "clientSecret": "${{ secrets.AZURE_CLIENT_SECRET }}",
@@ -42,4 +42,4 @@ jobs:
         with:
           app-name: auracelle-charlie-app
           package: app.zip
-          slot-name: Production
+
