@@ -22,17 +22,18 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m venv venv
-          source venv/bin/activate
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Upload artifact for deployment jobs
+      - name: Archive project files
+        run: |
+          zip -r app.zip . -x "venv/*" ".venv/*" "__pycache__/*"
+
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: python-app
-          path: |
-            .
-            !venv/
+          path: app.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -42,10 +43,13 @@ jobs:
       contents: read
 
     steps:
-      - name: Download artifact from build job
+      - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: python-app
+
+      - name: Unzip artifact
+        run: unzip app.zip
 
       - name: Login to Azure
         uses: azure/login@v2
@@ -59,4 +63,5 @@ jobs:
         with:
           app-name: 'Auracelle-Charlie-App'
           slot-name: 'Production'
-          package: .
+          package: app.zip
+
