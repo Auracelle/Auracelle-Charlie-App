@@ -50,11 +50,11 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_9712D91B25E5481C99C3C19B858946D5 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D3CDEDF6E2B04C1D8B3A217DF516CD1A }}
 
-      - name: Deploy with Run From Package
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: 'Auracelle-Charlie-App'
-          slot-name: 'Production'
-          package: app.zip
+      - name: Deploy to Azure Web App
+  uses: azure/webapps-deploy@v3
+  id: deploy-to-webapp
+  with:
+    app-name: 'auracelle-charlie-app'
+    slot-name: 'Production'
 
 
