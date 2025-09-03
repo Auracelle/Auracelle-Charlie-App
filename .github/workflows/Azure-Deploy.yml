@@ -3,7 +3,11 @@ name: Build and Deploy Auracelle Charlie App
 on:
   push:
     branches:
-      - main  # Change if needed
+      - main  # Change if your default branch is different
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   build-and-deploy:
@@ -23,17 +27,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Zip project for deployment
+      - name: Zip project
         run: zip -r app.zip .
 
-      - name: Azure Login (Service Principal)
+      - name: Azure Login (OIDC Federated Identity)
         uses: azure/login@v2
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
           app-name: auracelle-charlie-app
-          slot-name: Production
           package: app.zip
+          slot-name: Production
+
