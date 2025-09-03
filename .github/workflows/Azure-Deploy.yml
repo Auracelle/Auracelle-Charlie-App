@@ -36,5 +36,3 @@ jobs:
         with:
           app-name: auracelle-charlie-app
           package: app.zip
-
-
