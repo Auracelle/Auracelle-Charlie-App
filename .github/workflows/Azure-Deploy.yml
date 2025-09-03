@@ -26,8 +26,8 @@ jobs:
       - name: Zip project for deployment
         run: zip -r app.zip .
 
-      - name: Azure Login via Service Principal
-        uses: azure/login@v2
+      - name: Azure Login (Service Principal)
+        uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
@@ -36,3 +36,4 @@ jobs:
         with:
           app-name: auracelle-charlie-app
           package: app.zip
+          slot-name: Production
