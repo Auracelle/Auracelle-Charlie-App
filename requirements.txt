@@ -1,8 +1,6 @@
 streamlit
-pyngrok
-networkx
-matplotlib
-numpy
 pandas
-torch
+matplotlib
+networkx
+numpy
 plotly
