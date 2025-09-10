@@ -23,11 +23,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Prepare app.zip with all pages included
+      - name: Package app with proper structure
         run: |
-          mkdir -p packaged/pages
+          mkdir -p packaged
           cp app.py requirements.txt -t packaged/
-          cp -r pages/*.py packaged/pages/
+          cp -r pages packaged/
           cd packaged
           zip -r ../app.zip .
           cd ..
@@ -44,4 +44,3 @@ jobs:
         with:
           app-name: auracelle-charlie-app
           package: app.zip
-
