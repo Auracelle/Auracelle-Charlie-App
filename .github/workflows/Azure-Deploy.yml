@@ -23,14 +23,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Prepare app.zip with required files
+      - name: Prepare app.zip with all pages included
         run: |
-          mkdir packaged
+          mkdir -p packaged/pages
           cp app.py requirements.txt -t packaged/
-          cp -r pages packaged/pages
+          cp -r pages/*.py packaged/pages/
           cd packaged
           zip -r ../app.zip .
           cd ..
+          echo "Contents of app.zip:"
+          unzip -l app.zip
 
       - name: Azure Login
         uses: azure/login@v2
