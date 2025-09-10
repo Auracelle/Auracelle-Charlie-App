@@ -1,4 +1,4 @@
-name: Azure Deployment
+name: Deploy to Azure Web App
 
 on:
   push:
@@ -23,18 +23,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Create packaged folder (exclude self-copy)
+      - name: Create packaged folder
         run: |
           mkdir -p packaged
           shopt -s extglob
           cp -r !(packaged) packaged
           rm -rf packaged/packaged
 
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
           app-name: Auracelle-Charlie-App
-          slot-name: Production
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: packaged
-
