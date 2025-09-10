@@ -24,6 +24,7 @@ jobs:
 
     - name: Install dependencies
       run: |
+        cd Auracelle
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
@@ -32,19 +33,19 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Prepare app package with nested directory
+    - name: Package app
       run: |
         mkdir packaged
-        cp app.py requirements.txt -t packaged/
-        cp -r Auracelle packaged/
+        cp Auracelle/app.py Auracelle/requirements.txt -t packaged/
+        cp -r Auracelle/pages packaged/pages
         cd packaged
         zip -r ../app.zip .
         cd ..
-        echo "Contents of app.zip:"
+        echo "Packaged app.zip:"
         unzip -l app.zip
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
       with:
-        app-name: auracelle-charlie-app
+        app-name: Auracelle-Charlie-App
         package: app.zip
