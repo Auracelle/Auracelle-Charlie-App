@@ -1,6 +1,7 @@
 streamlit
-pandas
-matplotlib
 networkx
+matplotlib
 numpy
+pandas
+torch
 plotly
