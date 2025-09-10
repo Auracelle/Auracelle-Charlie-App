@@ -26,7 +26,7 @@ jobs:
       - name: Upload artifact for deployment
         run: |
           mkdir packaged
-          cp -r * packaged/
+          rsync -av --exclude=packaged . packaged
 
       - name: Login to Azure
         uses: azure/login@v2
