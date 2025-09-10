@@ -1,51 +1,41 @@
-name: Azure Streamlit Deploy
+name: Azure Streamlit App Deploy
 
 on:
   push:
     branches:
       - main
 
-permissions:
-  id-token: write
-  contents: read
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout GitHub repo
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: "3.11"
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
 
-    - name: Install dependencies
-      run: |
-        cd Auracelle
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Azure Login
-      uses: azure/login@v2
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Upload artifact for deployment
+        run: |
+          mkdir packaged
+          cp -r * packaged/
 
-    - name: Package app
-      run: |
-        mkdir packaged
-        cp Auracelle/app.py Auracelle/requirements.txt -t packaged/
-        cp -r Auracelle/pages packaged/pages
-        cd packaged
-        zip -r ../app.zip .
-        cd ..
-        echo "Packaged app.zip:"
-        unzip -l app.zip
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Deploy to Azure Web App
-      uses: azure/webapps-deploy@v3
-      with:
-        app-name: Auracelle-Charlie-App
-        package: app.zip
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'Auracelle-Charlie-App'
+          package: packaged
+
