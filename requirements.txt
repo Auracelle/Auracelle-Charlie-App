@@ -3,5 +3,5 @@ networkx
 matplotlib
 numpy
 pandas
-torch
 plotly
+torch==2.0.1+cpu -f https://download.pytorch.org/whl/torch_stable.html
