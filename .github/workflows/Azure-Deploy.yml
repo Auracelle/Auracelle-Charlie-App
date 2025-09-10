@@ -1,4 +1,4 @@
-name: Azure Streamlit App Deploy
+name: Azure Streamlit Deploy
 
 on:
   push:
@@ -10,32 +10,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout GitHub repo
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
-      - name: Install Python dependencies
+      - name: Install dependencies
         run: |
+          cd Auracelle
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Upload artifact for deployment
+      - name: Zip app for deployment
         run: |
           mkdir packaged
-          rsync -av --exclude=packaged . packaged
-
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          cp -r Auracelle/* packaged/
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'Auracelle-Charlie-App'
+          app-name: Auracelle-Charlie-App
+          slot-name: Production
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
           package: packaged
-
