@@ -3,7 +3,7 @@ name: Deploy Auracelle Charlie to Azure
 on:
   push:
     branches:
-      - main  # or your default branch
+      - main  # Update this if your default branch is different
 
 jobs:
   build-and-deploy:
@@ -23,13 +23,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Create packaged folder and copy files (excluding itself)
-        run: |
-          mkdir -p packaged
-          shopt -s extglob
-          cp -r !(packaged) packaged
-          rm -rf packaged/packaged
-
       - name: Azure Login
         uses: azure/login@v1
         with:
@@ -41,9 +34,14 @@ jobs:
             --name Auracelle-Charlie-App \
             --startup-file "streamlit run auracelle_charlie_simulation.py --server.port=8000"
 
+      - name: Create deployment ZIP
+        run: |
+          zip -r packaged.zip . -x "packaged.zip"
+
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
           app-name: Auracelle-Charlie-App
           slot-name: production
-          package: packaged
+          package: packaged.zip
+
