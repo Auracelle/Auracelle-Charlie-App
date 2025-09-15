@@ -1,9 +1,9 @@
-name: Deploy to Azure Web App
+name: Deploy Auracelle Charlie to Azure
 
 on:
   push:
     branches:
-      - main
+      - main  # or your default branch
 
 jobs:
   build-and-deploy:
@@ -11,19 +11,19 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: 3.11
 
-      - name: Install dependencies
+      - name: Upgrade pip and install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Create packaged folder
+      - name: Create packaged folder and copy files (excluding itself)
         run: |
           mkdir -p packaged
           shopt -s extglob
@@ -35,8 +35,15 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      - name: Set Azure Web App startup command
+        run: |
+          az webapp config set --resource-group Auracelle-rg \
+            --name Auracelle-Charlie-App \
+            --startup-file "streamlit run auracelle_charlie_simulation.py --server.port=8000"
+
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
           app-name: Auracelle-Charlie-App
+          slot-name: production
           package: packaged
